@@ -8,7 +8,8 @@
     "watch": "node-sass --watch src/resources/scss/app.scss src/public/css/app.css",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
-    "makeUp": "lint-staged"
+    "makeUp": "lint-staged",
+    "checkFile": "prettier --check '/src/*/*.js'"
   },
   "keywords": [
     "blog",
@@ -18,7 +19,11 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.1",
-    "express-handlebars": "^6.0.5"
+    "express-handlebars": "^6.0.5",
+    "method-override": "^3.0.0",
+    "mongoose": "^6.3.4",
+    "mongoose-delete": "^0.5.4",
+    "mongoose-slug-generator": "^1.0.4"
   },
   "devDependencies": {
     "husky": "^8.0.1",

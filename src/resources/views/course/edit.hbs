@@ -1,0 +1,6 @@
+<h1>Chỉnh sửa khóa học</h1>
+<form action="/courses/{{course._id}}?_method=PUT" method="post" class="mt-5 d-flex flex-column gap-2" >
+    <input type="text" name="name" value="{{course.name}}">
+    <textarea name="description" >{{course.description}} </textarea>
+    <button>Save</button>
+</form>

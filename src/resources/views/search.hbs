@@ -1,2 +1,11 @@
-<h1>Search</h1>
-<p>Result search....</p>
+<h1>Kết quả tìm kiếm</h1>
+{{#each course}}
+<div style="background-color: black;" class="p-3 mb-2">
+    <a href="/courses/{{this.slug}}">
+        <h2>{{this.name}}</h2>
+        <p>{{this.description}}</p>
+    </a>
+</div>
+{{else}}
+<p>Hiện tại chưa có khóa học nào phù hợp với từ khóa của bạn !</p>
+{{/each}}

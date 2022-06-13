@@ -1,0 +1,154 @@
+<form name="container-form" method="post" action="/courses/handle-form-action">
+  <div>
+    <h3>Khóa học đã xóa</h3>
+    <a href="/me/stored/courses" style="color: red;">Danh sách khóa học</a>
+    <div class="d-flex mt-4 align-items-center gap-2">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="checkbox__crash">
+        <label class="custom-control-label" for="checkbox__crash">Chọn tất cả</label>
+      </div>
+      <select class="form-control form-control-sm" name="action" style="width:170px" required>
+        <option value="">-- Chọn hành động --</option>
+        <option value="deleteAll">Xóa vĩnh viễn</option>
+        <option value="restoreAll">Khôi phục</option>
+      </select>
+
+      <button id="btn__checked" class="btn btn-primary btn-sm disabled">Thực hiện</button>
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">STT</th>
+        <th scope="col">Tên khóa học</th>
+        <th scope="col">Mô tả</th>
+        <th scope="col">Thời gian xóa</th>
+        <th scope="col">Tùy chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each course}}
+      <tr>
+        <td>
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input check__item" name="courseIds[]" value="{{this._id}}">
+          </div>
+        </td>
+        <th scope="row">{{sum @index 1}}</th>
+        <td>{{this.name}}</td>
+        <td>{{this.description}}</td>
+        <td>{{this.deletedAt}}</td>
+        <td>
+          <a href="" class="text-warning d-block btn-restore" data-id="{{this._id}}">Khôi phục</a>
+          <a href="" data-bs-toggle="modal" data-id="{{this._id}}" data-bs-target="#deleteModal"
+            class="text-danger mr-5">Xóa thật</a>
+        </td>
+      </tr>
+
+      {{else}}
+      <tr>
+        <td colspan="5" class="text-center">
+          Thùng rác trống
+          <a href="/me/stored/courses" style="color: blue;">Danh sách khóa học</a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</form>
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Bạn có muốn xóa luôn khóa học này ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">Hành động này không thể khôi phục </div>
+      <div class="modal-footer">
+        <button type="button" id="delete__course" class="btn btn-danger">Xóa luôn nha</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở về</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- Delete Form --}}
+<form id="handleDelete" method="post"></form>
+{{!-- Restore --}}
+<form id="handleRestore" method="post"></form>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const deleteModal = document.getElementById('deleteModal')
+    var id_courses;
+
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+      let button = event.relatedTarget
+      id_courses = button.getAttribute('data-id')
+    })
+
+    const handleDelete = document.getElementById('handleDelete')
+    const delete__course = document.getElementById("delete__course");
+    delete__course.addEventListener('click', () => {
+      handleDelete.action = `/courses/${id_courses}/force?_method=DELETE`;
+      handleDelete.submit()
+    })
+
+    //Handle restore
+    const btn_restored = $('.btn-restore')
+    const handleRestore = document.getElementById('handleRestore')
+    btn_restored.click(function (e) {
+      var courseId = $(this).data('id')
+      e.preventDefault();
+      handleRestore.action = `/courses/${courseId}/restore?_method=PATCH`;
+      handleRestore.submit()
+    })
+
+
+
+    //Handle select all
+    const checkbox__crash = document.getElementById("checkbox__crash");
+    let list__checkItem = document.getElementsByClassName("check__item");
+    const btn__checked = document.getElementById("btn__checked");
+
+    function pushChecked() {
+      const checked = []
+      for (const itemCheck of list__checkItem) {
+        if (itemCheck.checked) {
+          checked.push(itemCheck)
+        }
+      }
+      return checked.length > 0 ? checked : null;
+    }
+
+
+    checkbox__crash.addEventListener('change', function () {
+      const statusCheck = checkbox__crash.checked
+      if (statusCheck) {
+        btn__checked.classList.remove("disabled")
+      } else {
+        btn__checked.classList.add("disabled")
+      }
+      for (const itemCheck of list__checkItem) {
+        itemCheck.checked = statusCheck;
+      }
+    })
+
+    for (const itemCheck of list__checkItem) {
+      itemCheck.addEventListener('change', function () {
+        const list__checked = pushChecked()
+        const checkAllItem = list__checkItem.length === list__checked?.length
+        checkbox__crash.checked = checkAllItem;
+        if (list__checked?.length > 0) {
+          btn__checked.classList.remove("disabled")
+        } else {
+          btn__checked.classList.add("disabled")
+        }
+      })
+    }
+  })
+
+</script>

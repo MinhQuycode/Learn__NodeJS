@@ -1,10 +1,12 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand">
-            <img src="/img/coin.png" width="50px" height="50px" alt="Logo">
+        <a class="navbar-brand" href="/">
+            <img src="/img/Home.png" width="50px" height="50px" alt="Logo">
         </a>
+        <a href="/courses/create">Post course</a>
+        <a href="/me/stored/courses">My course</a>
         {{!-- method là phương thức submit / action là url submit --}}
-        <form class="d-flex" method="get" action="/search">
+        <form class="d-flex" method="get" action="/search/keyword">
             <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
