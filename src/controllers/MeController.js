@@ -3,9 +3,13 @@ import { convertArrToObject } from "../until/mongoose.js";
 class meController {
     // method GET me/stored/courses
     storedCourses(req, res, next) {
-        Promise.all([MyCourse.find({}), MyCourse.countDocumentsDeleted()])
+
+        Promise.all([MyCourse.find({}).sortable(req), MyCourse.countDocumentsDeleted()])
             .then(([course, deletedCount]) => {
-                res.render("me/stored-courses", { deletedCount, course: convertArrToObject(course) });
+                res.render("me/stored-courses", {
+                    deletedCount,
+                    course: convertArrToObject(course),
+                });
             })
             .catch((err) => next(err));
 

@@ -19,9 +19,19 @@
       <tr>
         <th scope="col"></th>
         <th scope="col">STT</th>
-        <th scope="col">Tên khóa học</th>
-        <th scope="col">Mô tả</th>
-        <th scope="col">Thời gian tạo</th>
+        <th scope="col">
+          <span>
+            khóa học
+          </span>
+          {{{softable 'name' _soft}}}
+        </th>
+        <th scope="col">
+          Mô tả
+          {{{softable 'description' _soft}}}
+        </th>
+        <th scope="col">Thời gian tạo
+          {{{softable 'createdAt' _soft}}}
+        </th>
         <th scope="col">Tùy chỉnh</th>
       </tr>
     </thead>
@@ -33,7 +43,7 @@
             <input type="checkbox" class="custom-control-input" name="courseIds[]" value="{{this._id}}">
           </div>
         </td>
-        <th scope="row">{{sum @index 1}}</th>
+        <th scope="row">{{this._id}}</th>
         <td>{{this.name}}</td>
         <td>{{this.description}}</td>
         <td>{{this.createdAt}}</td>
@@ -97,6 +107,7 @@
     //Checkbox all
     var checkbox__all = $('#checkbox__all')
     var courseItemCheckbox = $('input[name="courseIds[]"]')
+    console.log([courseItemCheckbox[0]])
 
     checkbox__all.change(function () {
       var isCheckedAll = $(this).prop("checked");

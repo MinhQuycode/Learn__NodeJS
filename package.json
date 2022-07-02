@@ -18,11 +18,13 @@
   "author": "MinhQuy",
   "license": "ISC",
   "dependencies": {
+    "@primer/octicons": "^17.3.0",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.5",
     "method-override": "^3.0.0",
     "mongoose": "^6.3.4",
     "mongoose-delete": "^0.5.4",
+    "mongoose-sequence": "^5.3.1",
     "mongoose-slug-generator": "^1.0.4"
   },
   "devDependencies": {
